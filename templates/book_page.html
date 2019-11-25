@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Book
+{% endblock %}
+
+{% block main %}
+    <div class="container book-info">
+      <table class="table table-striped">
+        <tr>
+          <td>ISBN<td>
+          <td>{{ book_details.isbn }}<td>
+        </tr>
+        <tr>
+          <td>Title<td>
+          <td>{{ book_details.title }}<td>
+        </tr>
+        <tr>
+          <td>Author<td>
+          <td>{{ book_details.author }}<td>
+        </tr>
+        <tr>
+          <td>Publication year<td>
+          <td>{{ book_details.year }}<td>
+        </tr>
+        <tr>
+          <td>Rating from <a href="https://www.goodreads.com">Goodreads</a><td>
+          {% if not gd_rate.average_rating %}
+          <td>No info<td>
+          {% endif %}
+          <td>{{ gd_rate.average_rating }}<td>
+        </tr>
+        <tr>
+          <td>Number of ratings from <a href="https://www.goodreads.com">Goodreads</a><td>
+          {% if not gd_rate.work_ratings_count %}
+          <td>No info<td>
+          {% endif %}
+          <td>{{ gd_rate.work_ratings_count }}<td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="container reviews">
+      <button type="button" class="rev-btn btn-outline-dark btn-lg" data-toggle="collapse" data-target="#reviews">Show reviews</button>
+      <div id="reviews" class="collapse">
+
+          {% for rend_review in rend_reviews %}
+          {{ loop.index + pagination.skip }}
+          <div class="whole-review">
+            <div class="rev-user"><b>{{ rend_review.username }} rated this book {{ rend_review.rating }} out of 5</b></div>
+            <div class="text-review"><i>"{{ rend_review.review }}"</i></div><br>
+          </div>
+          {% endfor %}
+          {% if rev_form == 0 and rend_review %}
+            <div class="whole-review">No reviews</div>
+          {% endif %}
+
+      </div>
+    </div>
+
+    {{ pagination.links }}
+
+    {% if rev_form == 0 %}
+    <div class="container review-box">
+      <button type="button" class="rev1-btn btn-outline-dark btn-lg" data-toggle="collapse" data-target="#review-box">Leave review</button>
+      <div id="review-box" class="collapse">
+        <form action="{{ url_for('book_page', username = username, book_isbn = book_isbn) }}" method="post">
+          <div class="rev-form">
+            <div class="form-group">
+              <label for="us_review">Enter your review</label>
+              <textarea class="form-control" name="review" placeholder="Enter your review" id="us_review" type="text"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="rating">Enter your rating</label>
+              <input class="form-control" name="rating" placeholder="Enter your raiting" type="number" id="rating" min="1" max="5"/>
+            </div>
+           <button type="submit" class="btn btn-light">Submit</button>
+         </div>
+        </form>
+      </div>
+    </div>
+    {% endif %}
+
+{% endblock %}

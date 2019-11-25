@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Search
+{% endblock %}
+
+{% block main %}
+     <form action="{{ url_for('search', username = username, searching = searching) }}" method="post">
+       <div class="input-group main-search mb-3">
+         <input class="form-control border border-dark" name="searching" id="q" placeholder="ISBN, title or author of a book" type="text"/>
+         <div class="input-group-append">
+           <button type="submit" class="btn btn-light border border-dark">Search</button>
+         </div>
+       </div>
+     </form>
+
+{% endblock %}

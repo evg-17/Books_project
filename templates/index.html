@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block header %}
+    {% if not session.user_id %}
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a href="/login" class="nav-btn btn btn-outline-dark btn-lg">Log In</a>
+        </li>
+        <li class="nav-item">
+          <a href="/register" class="nav-btn btn btn-outline-dark btn-lg">Register</a>
+        </li>
+      </ul>
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    {% if session.user_id %}
+        <form action="/search_results" method="post">
+          <div class="form-box">
+            <div class="form-group">
+              <input class="form-control" id="q" placeholder="ISBN, title or author of a book" type="text"/>
+            </div>
+            <button type="submit" class="btn btn-light">Search</button>
+          </div>
+        </form>
+    {% else %}
+        <div class="welcome">
+          <h1>Welcome!</h1>
+          <p>It's a book review website. Here you can search for books,
+          leave reviews for individual books, and see the reviews made by other people.
+          To start please <a href="/register">register</a> or <a href="/login">log in</a>.</p>
+        </div>
+    {% endif %}
+{% endblock %}
